@@ -1,16 +1,13 @@
 package tongji.lzt.ar_data_recorder;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.model.LatLng;
@@ -62,6 +59,7 @@ import tongji.lzt.ar_data_recorder.packet.GpsPoisPacket;
 import tongji.lzt.ar_data_recorder.packet.GpsRealtimeNaviPacket;
 import tongji.lzt.ar_data_recorder.packet.GpsRouteFillingStationPacket;
 import tongji.lzt.ar_data_recorder.packet.GpsServiceAreaPacket;
+import tongji.lzt.ar_data_recorder.util.InvisibleVideoRecorder;
 import tongji.lzt.ar_data_recorder.util.NetPacket;
 
 public class RouteNaviActivity extends Activity implements AMapNaviListener, AMapNaviViewListener, PoiSearch.OnPoiSearchListener, RoutePOISearch.OnRoutePOISearchListener {
@@ -94,16 +92,23 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 
     LatLng refLatLng;
 
+    // Video Recorder
+    InvisibleVideoRecorder videoRecorder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_base_navi);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//强制为横屏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             filesDirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AR_Data/";
             // 动态获得路径
-            file = new File(filesDirPath,"ar_data_0.txt");
+            file = new File(filesDirPath,"ar_data_test.txt");
             try {
                 fos = new FileOutputStream(file);
             } catch (FileNotFoundException e) {
@@ -141,6 +146,10 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
         boolean gps = getIntent().getBooleanExtra("gps", false);
 
         new Thread(runnable).start();
+
+        // Video Recorder
+        videoRecorder= new InvisibleVideoRecorder(this);
+        videoRecorder.start();
 
         Log.i("MyNetwork","Connect Succeeds");
         if (gps) {
@@ -325,7 +334,6 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
         } catch (AMapException e) {
             e.printStackTrace();
         }
-
     }
 
     Runnable runnable = new Runnable() {
@@ -414,6 +422,7 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
         //退出时调用此接口释放导航资源，在调用此接口后不能再调用AMapNavi类里的其它接口。
         mAMapNavi.stopNavi();
         //停止导航，包含实时导航和模拟导航。
+        videoRecorder.stop();
 
         /**
          * 当前页面不销毁AmapNavi对象。

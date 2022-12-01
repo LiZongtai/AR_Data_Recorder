@@ -127,6 +127,8 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     private static final String[] NEEDED_PERMISSIONS = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
     };
 
     @Override
