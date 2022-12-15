@@ -1,5 +1,7 @@
 package tongji.lzt.ar_data_recorder;
 
+import static tongji.lzt.ar_data_recorder.util.DocumentsUtils.DoubleToArray;
+
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -105,10 +107,13 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        String dataName = getIntent().getStringExtra("data");
+        String videoName = getIntent().getStringExtra("video");
+
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             filesDirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AR_Data/";
             // 动态获得路径
-            file = new File(filesDirPath,"ar_data_test.txt");
+            file = new File(filesDirPath,dataName);
             try {
                 fos = new FileOutputStream(file);
             } catch (FileNotFoundException e) {
@@ -148,7 +153,7 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
         new Thread(runnable).start();
 
         // Video Recorder
-        videoRecorder= new InvisibleVideoRecorder(this);
+        videoRecorder= new InvisibleVideoRecorder(this,videoName);
         videoRecorder.start();
 
         Log.i("MyNetwork","Connect Succeeds");
@@ -339,8 +344,12 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-//            String serverName = getIntent().getStringExtra("server");
-//            int serverPort = getIntent().getIntExtra("port",8889);
+
+            try {
+                fos.write(DoubleToArray(System.currentTimeMillis()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             while (true){
                 if(b_sendRoutePacket){

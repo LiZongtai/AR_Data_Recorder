@@ -19,7 +19,7 @@ public class GpsRouteFillingStationPacket extends NetPacket {
         fsPOIItems = _fsPOIItems;
     }
     public int GetCommand(){
-        return 154;
+        return 53;
     }
 
     public void Write(ByteArrayOutputStream packWriter){

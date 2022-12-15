@@ -20,7 +20,7 @@ public class GpsServiceAreaPacket extends NetPacket {
     }
 
     public int GetCommand(){
-        return 153;
+        return 52;
     }
 
     public void Write(ByteArrayOutputStream packWriter){

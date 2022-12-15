@@ -37,6 +37,21 @@ public class DocumentsUtils {
         sExtSdCardPaths.clear();
     }
 
+    public static byte[] DoubleToArray(double Value)
+    {
+        long accum = Double.doubleToRawLongBits(Value);
+        byte[] byteRet = new byte[8];
+        byteRet[0] = (byte)(accum & 0xFF);
+        byteRet[1] = (byte)((accum>>8) & 0xFF);
+        byteRet[2] = (byte)((accum>>16) & 0xFF);
+        byteRet[3] = (byte)((accum>>24) & 0xFF);
+        byteRet[4] = (byte)((accum>>32) & 0xFF);
+        byteRet[5] = (byte)((accum>>40) & 0xFF);
+        byteRet[6] = (byte)((accum>>48) & 0xFF);
+        byteRet[7] = (byte)((accum>>56) & 0xFF);
+        return byteRet;
+    }
+
     /**
      * Get a list of external SD card paths. (Kitkat or higher.)
      *

@@ -36,6 +36,7 @@ public abstract class NetPacket {
             }
         }
         try{
+            dataOutputStream.writeDouble(System.currentTimeMillis());
             dataOutputStream.writeChar(packLength+1);
             dataOutputStream.writeByte((byte)pack.GetCommand());
             dataOutputStream.write(contentPack,idx,(int)packLength);

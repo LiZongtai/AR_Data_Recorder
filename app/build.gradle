@@ -44,6 +44,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     implementation 'com.amap.api:navi-3dmap:latest.integration'
+    implementation 'com.amap.api:search:latest.integration'
     configurations {
         implementation.exclude group:'androidx.lifecycle',module:'lifecycle-viewmodel-ktx'
     }

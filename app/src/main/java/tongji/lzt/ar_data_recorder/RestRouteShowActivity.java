@@ -3,7 +3,6 @@ package tongji.lzt.ar_data_recorder;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -83,12 +82,12 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     private MapView mRouteMapView;
     private Marker mStartMarker;
     private Marker mEndMarker;
-    private NaviLatLng endLatlng = new NaviLatLng(39.955846, 116.352765);
-    private NaviLatLng startLatlng = new NaviLatLng(39.925041, 116.437901);
+    private NaviLatLng endLatlng = new NaviLatLng(31.286012,121.21416);
+    private NaviLatLng startLatlng = new NaviLatLng(31.286012,121.21416);
     private List<NaviLatLng> startList = new ArrayList<NaviLatLng>();
 
-    private LatLonPoint mStartPoint = new LatLonPoint(39.955846, 116.352765);
-    private LatLonPoint mEndPoint = new LatLonPoint(39.925041, 116.437901);
+    private LatLonPoint mStartPoint = new LatLonPoint(31.286012,121.21416);
+    private LatLonPoint mEndPoint = new LatLonPoint(31.286012,121.21416);
     /**
      * 途径点坐标集合
      */
@@ -115,8 +114,8 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
      */
     private boolean calculateSuccess = false;
     private boolean chooseRouteSuccess = false;
-    private EditText editText;
-    private EditText portText;
+    private EditText dataText;
+    private EditText videoText;
 
     private myRoutePoiOverlay overlay;
 
@@ -135,8 +134,8 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rest_calculate);
-        editText = (EditText) findViewById(R.id.car_number); //car_number IP地址
-        portText = (EditText) findViewById(R.id.port);
+        dataText = (EditText) findViewById(R.id.data_name); //car_number IP地址
+        videoText = (EditText) findViewById(R.id.video_name);
         CheckBox congestion = (CheckBox) findViewById(R.id.congestion);
         CheckBox cost = (CheckBox) findViewById(R.id.cost);
         CheckBox hightspeed = (CheckBox) findViewById(R.id.hightspeed);
@@ -163,7 +162,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         //mRouteMapView.
         mAmap = mRouteMapView.getMap();
         mAmap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(
-                new LatLng(31.021954166666667,121.4420525), 13, 0 , 0
+                new LatLng(31.286012,121.21416), 13, 0 , 0
                  )
             )
         );
@@ -439,19 +438,19 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
             case R.id.gpsnavi:
                 Intent gpsintent = new Intent(getApplicationContext(), RouteNaviActivity.class);
                 gpsintent.putExtra("gps", true);
-                String gpsserverName = editText.getText().toString();
-                int _gpsportNum = Integer.parseInt(portText.getText().toString());
-                gpsintent.putExtra("server",gpsserverName);
-                gpsintent.putExtra("port",_gpsportNum);
+                String data_name = dataText.getText().toString();
+                String video_name = videoText.getText().toString();
+                gpsintent.putExtra("data",data_name);
+                gpsintent.putExtra("video",video_name);
                 startActivity(gpsintent); //启动活动
                 break;
             case R.id.emulatornavi:
                 Intent intent = new Intent(getApplicationContext(), RouteNaviActivity.class);
                 intent.putExtra("gps", false);
-                String serverName = editText.getText().toString();
-                int _portNum = Integer.parseInt(portText.getText().toString());
-                intent.putExtra("server",serverName);
-                intent.putExtra("port",_portNum);
+                String data_name_2 = dataText.getText().toString();
+                String video_name_2 = videoText.getText().toString();
+                intent.putExtra("data",data_name_2);
+                intent.putExtra("video",video_name_2);
                 startActivity(intent); //启动活动
                 break;
             default:

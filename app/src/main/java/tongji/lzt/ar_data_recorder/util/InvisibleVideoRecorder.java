@@ -34,7 +34,7 @@ public class InvisibleVideoRecorder {
 
     private final int CAMERA_BACK_ID = 0;
 
-    public InvisibleVideoRecorder(Context context) {
+    public InvisibleVideoRecorder(Context context,String fileName) {
         this.context = context;
         handlerThread = new HandlerThread("camera");
         handlerThread.start();
@@ -46,7 +46,7 @@ public class InvisibleVideoRecorder {
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
             mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 
-            final String filename = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AR_Data/" + File.separator + System.currentTimeMillis() + ".mp4";
+            final String filename = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AR_Data/" +fileName + ".mp4";
             mediaRecorder.setOutputFile(filename);
             Log.d(TAG, "start: " + filename);
 
